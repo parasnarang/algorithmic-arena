@@ -1,15 +1,16 @@
+#!/bin/bash
 if [ $# -lt 1 ]
 then
-    echo "Enter new program name"
+    echo "No Program name specified"
     exit 1
 fi
 if [ ! -e $1 ]
 then
-mv *.cpp ../doneprogs/
-cp src/template.cpp $1.cpp
-rm -f input output
-emacs -nw input output src/myalgo.h $1.cpp
+    mv *.cpp ../doneprogs/
+    rm -f input output
+    cp ../src/template.cpp $1.cpp
+    emacs -nw input output ../src/myalgo.h $1.cpp
 else
-emacs -nw input output src/myalgo.h $1
+    emacs -nw input output ../src/myalgo.h $1
 fi
 
