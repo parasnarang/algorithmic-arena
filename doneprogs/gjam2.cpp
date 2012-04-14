@@ -82,5 +82,38 @@ int readInt() {
 
 int main()
 {
+    int t;
+    t = readInt();
+    IFOR(ti, 1, t+1)
+    {
+	int n = readInt();
+	int s = readInt();
+	int p = readInt();
+	int sur[n];
+	int nsur[n];
+	REP(ni, n)
+	{
+	    int k = readInt();
+	    nsur[ni] = (k!=0)?((k-1)/3 + 1 >= p):(p==0);
+	    sur[ni]  = (k>=2)?((k-2)/3 + 2 >= p):(k>=p);
+	    //debug(k, (k-1)/3 , nsur[ni], (k-2)/3+2, sur[ni]);
+	}
+	int scount = s;
+	int i=0;
+	int maxp=0;
+	while(i < n)
+	{
+	    if(nsur[i])
+	    {
+		maxp++;
+	    }else if(sur[i] && scount)
+	    {
+		scount--;
+		maxp++;
+	    }
+	    i++;
+	}
+	printf("Case #%d: %d\n", ti, maxp);
+    }
     return 0;
 }

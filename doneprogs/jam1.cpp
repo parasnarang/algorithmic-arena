@@ -82,5 +82,16 @@ int readInt() {
 
 int main()
 {
+    int t = readInt();
+    IFOR(ti, 1, t+1)
+    {
+	int n = readInt();
+	int k = readInt();
+	if((k+1)%(1<<n) == 0)
+	{
+	    printf("Case #%d: ON\n", ti);
+	}else
+	    printf("Case #%d: OFF\n", ti);
+    }
     return 0;
 }

@@ -33,7 +33,6 @@ using namespace std;
 #define SWAP(a,b,t)  t=a,a=b,b=t
 #define REP(i,n)     for(int i=0; i<n; i++)
 #define ll           long long int
-#define ull          unsigned long long int
 #define gint(t)      scanf("%d", &t);
 #define gint2(a,b)   scanf("%d%d", &a, &b);
 #define gint3(a,b,c) scanf("%d%d%d", &a, &b, &c);
@@ -79,8 +78,36 @@ int readInt() {
 /* memset(start*, byteVal, numBytes);
  *  memcpy(dst*, src*, numBytes);
  */
+#define MAXN 1005
+#define MODN 1000000007
+uint dp[MAXN][MAXN];
+uint res[MAXN];
+void calcdp()
+{
+    dp[1][1] = 1;
+    dp[1][2] = 0;
+    res[1] = 1;
+    IFOR(ni, 2, MAXN-1)
+    {
+	dp[ni][0] = 0;
+	res[ni]   = 0;
+	IFOR(mi, 1, ni+1)
+	{
+	    dp[ni][mi] = (((ll)dp[ni-1][mi])*mi + dp[ni-1][mi-1])%MODN;
+	    res[ni] = (res[ni]+dp[ni][mi])%MODN;
+	}
+	dp[ni][ni+1] = 0;
+    }
+}
 
 int main()
 {
+    int t = readInt();
+    calcdp();
+    while(t--)
+    {
+	int n = readInt();
+	pint(res[n]);
+    }
     return 0;
 }

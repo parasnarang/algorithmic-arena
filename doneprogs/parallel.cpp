@@ -41,9 +41,10 @@ using namespace std;
 #define pint2(a,b)   printf("%d %d\n", a, b);
 #define pint3(a,b,c) printf("%d %d %d\n", a, b, c);
 #define pii          pair<int, int>
-#define debug(args...) {dbg,args; cerr<<endl;}
+#define debug(args...) {} //{dbg,args; cerr<<endl;}
 #define dline cerr<<endl
 #define pb           push_back
+#define mp           make_pair
 struct debugger
 {
     template<typename T> debugger& operator , (const T& v)
@@ -80,7 +81,95 @@ int readInt() {
  *  memcpy(dst*, src*, numBytes);
  */
 
+vector<pii> resv[25];
+vector<pii> pv[25];
+void recurseup(int start, int end, int depth)
+{
+    debug("recurse for", start, end, depth);
+    if(start >= end)
+    {
+	return;
+    }
+    if(start + 1 ==end)
+    {
+	resv[depth].push_back(mp(start, end));
+	return;
+    }
+    int c = 1;
+    while(start+c<=end) c=c<<1;
+    c>>=1;
+    debug("calling for", start, start+c-1);
+    recurseup(start, start+c-1,depth-1);
+    if(start + c  <= end)
+    {
+	debug("calling for", start+c, end);
+
+	recurseup(start+c, end, depth-1);
+	resv[depth].push_back(mp(start+c-1, end));
+    }
+}
+void recursedown(int start, int end, int depth)
+{
+    
+    debug("recursedown for", start, end, depth);
+    if(start >= end)
+    {
+	return;
+    }
+    if(start + 1 ==end)
+    {
+	if(start!=1) {
+	    debug("In", start, end);
+	    resv[depth].push_back(mp(start-1, start));
+	}
+	return;
+    }
+    int c = 1;
+    while(start+c<=end) c=c<<1;
+    c>>=1;
+    debug("calling for", start, start+c-1);
+    recursedown(start, start+c-1,depth+1);
+    if(start + c  <= end)
+    {
+	debug("calling for", start+c, end);
+
+	recursedown(start+c, end, depth+1);
+	if(start!=1) {
+	    debug("In", start, end);
+	    resv[depth].push_back(mp(start-1, start+c-1));
+	}
+    }
+    
+}
 int main()
 {
+    int n = readInt();
+    int tc = 0;
+    recurseup(1, n, 10);
+    recursedown(1, n, 11);
+    int dc = 0;
+    REP(i, 25)
+    {
+	if(resv[i].size() != 0)
+	{
+	    dc++;
+	}
+    }
+    pint(dc);
+    REP(i, 25)
+    {
+	if(resv[i].size() != 0)
+	{
+	    printf("%d", resv[i].size());
+	    tc+=resv[i].size();
+	    EACH(it, resv[i])
+	    {
+		printf(" %d+%d=%d", it->first, it->second, it->second);
+	    }
+	    printf("\n");
+	}
+    }
+    debug("tc", tc, dc);
+    
     return 0;
 }

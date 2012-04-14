@@ -75,12 +75,52 @@ int readInt() {
     return n;
 }
 
-
+char xmap[255];
 /* memset(start*, byteVal, numBytes);
  *  memcpy(dst*, src*, numBytes);
  */
-
+char v[105];
 int main()
 {
+    xmap['a'] = 'y';
+    xmap['b'] = 'h';
+    xmap['c'] = 'e';
+    xmap['d'] = 's';
+    xmap['e'] = 'o';
+    xmap['f'] = 'c';
+    xmap['g'] = 'v';
+    xmap['h'] = 'x';
+    xmap['i'] = 'd';
+    xmap['j'] = 'u';
+    xmap['k'] = 'i';
+    xmap['l'] = 'g';
+    xmap['m'] = 'l';
+    xmap['n'] = 'b';
+    xmap['o'] = 'k';
+    xmap['p'] = 'r';
+    xmap['q'] = 'z';
+    xmap['r'] = 't';
+    xmap['s'] = 'n';
+    xmap['t'] = 'w';
+    xmap['u'] = 'j';
+    xmap['v'] = 'p';
+    xmap['w'] = 'f';
+    xmap['x'] = 'm';
+    xmap['y'] = 'a';
+    xmap['z'] = 'q';
+    xmap[' '] = ' ';
+    int t;
+    cin >> t;
+    cin.getline(v, 105);
+    IFOR(ti, 1, t+1)
+    {
+	cin.getline(v, 105);
+	int l = strlen(v);
+	REP(li, l)
+	{
+	    v[li] = xmap[v[li]];
+	}
+	printf("Case #%d: %s\n", ti, v);
+    }
     return 0;
 }

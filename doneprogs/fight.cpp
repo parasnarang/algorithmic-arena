@@ -80,7 +80,35 @@ int readInt() {
  *  memcpy(dst*, src*, numBytes);
  */
 
+ull hcf(ull a, ull b)
+{
+    ull x;
+    while(b)
+    {
+	x = a%b;
+	a = b;
+	b = x;
+    }
+    return a;
+}
+
+ull lcm(ull a, ull b) {
+    return (a/hcf(a,b))*b;
+}
+
+
 int main()
 {
+    int t;
+    ull a, b, c, d, k, l, r, h1, h2;
+    scanf("%d", &t);
+    while(t--)
+    {
+	scanf("%llu %llu %llu %llu %llu", &a, &b, &c, &d, &k);
+	h1 = hcf(a, b);
+	h2 = hcf(c, d);
+	r = 2*((k / (h1 / hcf(h1,h2)) / h2) ) +1 ;
+	printf("%llu\n", r);
+    }
     return 0;
 }

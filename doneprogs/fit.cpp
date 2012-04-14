@@ -32,8 +32,7 @@ using namespace std;
 #define EACH(it,v)   IFOR(it,v.begin(),v.end())
 #define SWAP(a,b,t)  t=a,a=b,b=t
 #define REP(i,n)     for(int i=0; i<n; i++)
-#define ll           long long int
-#define ull          unsigned long long int
+#define ll           long long
 #define gint(t)      scanf("%d", &t);
 #define gint2(a,b)   scanf("%d%d", &a, &b);
 #define gint3(a,b,c) scanf("%d%d%d", &a, &b, &c);
@@ -82,5 +81,25 @@ int readInt() {
 
 int main()
 {
+    int t = readInt();
+    while(t--)
+    {
+	int n = readInt();
+	int maxd = 0;
+	int min = readInt();
+	int max = min;
+	IFOR(ni, 1, n)
+	{
+	    int v = readInt();
+	    CMIN(min, v);
+	    CMAX(maxd, (v - min));
+	}
+	if(maxd == 0)
+	{
+	    printf("UNFIT\n");
+	}else{
+	    printf("%d\n", maxd);
+	}
+    }
     return 0;
 }
