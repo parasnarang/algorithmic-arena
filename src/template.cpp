@@ -35,15 +35,21 @@ using namespace std;
 #define ll           long long int
 #define ull          unsigned long long int
 #define gint(t)      scanf("%d", &t);
-#define gint2(a,b)   scanf("%d%d", &a, &b);
-#define gint3(a,b,c) scanf("%d%d%d", &a, &b, &c);
 #define pint(t)      printf("%d\n", t);
-#define pint2(a,b)   printf("%d %d\n", a, b);
-#define pint3(a,b,c) printf("%d %d %d\n", a, b, c);
-#define pii          pair<int, int>
+#define pb           push_back
+
+#ifdef JAI_ARENA
 #define debug(args...) {dbg,args; cerr<<endl;}
 #define dline cerr<<endl
-#define pb           push_back
+#else
+#define debug(args...) {};
+#endif
+
+typedef pair<int, int>  pii;
+typedef vector<int>     vi;
+typedef vector<vi>      vii;
+
+
 struct debugger
 {
     template<typename T> debugger& operator , (const T& v)

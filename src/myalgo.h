@@ -1308,3 +1308,12 @@ int fordFulkerson( int n, int s, int t )
     
     return flow;
 }
+
+void powerMat(ULL f[2][2],ULL n,ULL mod){
+    if(n==0||n==1)return;
+    ULL m[2][2]={{1,1},{1,0}};
+    powerMat(f,n/2,mod);
+    multiply(f,f,mod);
+    if(n%2!=0)
+	multiply(f,m,mod);
+}
