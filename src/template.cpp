@@ -20,7 +20,6 @@ using namespace std;
 
 #define INT_MAX 2147483647
 #define INT_MIN -2147483648
-#define uint unsigned int
 #define MAX(a,b)   (((a)>(b))?(a):(b))
 #define MIN(a,b)   (((a)<(b))?(a):(b))
 #define CMAX(a,b)  if((a)<(b)) a=b
@@ -29,11 +28,10 @@ using namespace std;
 #define REVI(i,a,b)  for(int i= a ; i >= b ; --i)
 #define LET(x,a)     __typeof(a) x(a)
 #define IFOR(i,a,b)  for(LET(i,a);i!=(b);++i)
+#define DFOR(i,a,b)  for(LET(i,a);i<(b);++i)
 #define EACH(it,v)   IFOR(it,v.begin(),v.end())
 #define SWAP(a,b,t)  t=a,a=b,b=t
 #define REP(i,n)     for(int i=0; i<n; i++)
-#define ll           long long int
-#define ull          unsigned long long int
 #define gint(t)      scanf("%d", &t);
 #define pint(t)      printf("%d\n", t);
 #define pb           push_back
@@ -45,10 +43,13 @@ using namespace std;
 #define debug(args...) {};
 #endif
 
+typedef long long int   ll;
+typedef unsigned long long int ull;
+typedef unsigned int    uint;
 typedef pair<int, int>  pii;
 typedef vector<int>     vi;
 typedef vector<vi>      vii;
-
+typedef vector<pii>     vpii;
 
 struct debugger
 {

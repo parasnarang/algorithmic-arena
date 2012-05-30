@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstdio>
+x#include <cstdio>
 #include <vector>
 #include <stack>
 #include <queue>
@@ -1278,7 +1278,7 @@ int fordFulkerson( int n, int s, int t )
     // init the flow network
     memset( fnet, 0, sizeof( fnet ) );
     
-    int flow = 0,qf,qb;
+    int flow = 0;
     
     while( true )
     {

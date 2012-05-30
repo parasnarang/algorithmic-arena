@@ -21,6 +21,7 @@ fi
 mkdir $1
 mkdir $1/bin
 cp test.sh $1
+cp otest.sh $1
 cp start.sh $1
 cp clean.sh $1
 cp comparer.sh $1

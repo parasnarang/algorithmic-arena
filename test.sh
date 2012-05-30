@@ -11,7 +11,7 @@ progname=myprog #`echo $1 | sed -e 's/^.*\\///'`
 
 rm -f bin/algoout bin/$progname.o bin/diffout > /dev/null >> /dev/null
 
-g++ -g *.cpp -o bin/$progname.o
+g++ -DJAI_ARENA -g *.cpp -o bin/$progname.o
 
 if [ ! -e bin/$progname.o ]
 then
