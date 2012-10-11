@@ -9,8 +9,8 @@ then
     mv *.cpp ../doneprogs/
     rm -f *.in *.out
     cp ../src/template.cpp $1.cpp
-    emacs -nw  ../src/myalgo.h $1.cpp
+    mvim input output ../src/myalgo.h $1.cpp
 else
-    emacs -nw  ../src/myalgo.h $1
+    mvim input output ../src/myalgo.h $1
 fi
 
