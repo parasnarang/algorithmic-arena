@@ -25,3 +25,4 @@ cp otest.sh $1
 cp start.sh $1
 cp clean.sh $1
 cp comparer.sh $1
+cp create.sh $1

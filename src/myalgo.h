@@ -14,8 +14,10 @@ using namespace std;
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define FOR(i,a,b) for(i=a; i<b; i++)
 #define ll long long
-#define p_vector(v) for(uint tptr=0; tptr<v.size(); tptr++) \
+#define p_vector(v) for(uint tptr=0; tptr<v.size(); tptr++)	\
 	cout<<v[tptr]<<endl;  //prints the vector elements
+#define bitcount(n) __builtin_popcount(n)
+
 
 class FastInput {
 public:
@@ -308,7 +310,7 @@ vector<int> mindistance_bfs_unweighted(int start, vector< vector<int>  > &adj) {
     return dis;
 }
 
-int hcf(ullong a, ullong b)
+int gcd(ullong a, ullong b)
 {
     int x;
     while(b)
@@ -321,7 +323,7 @@ int hcf(ullong a, ullong b)
 }
 
 inline int lcm(int a, int b) {
-    return (a*b)/hcf(a,b);
+    return (a*b)/gcd(a,b);
 }
 
 int num_div_by_all(int n, vector<int> &a) {
@@ -348,32 +350,10 @@ bool eq_vector_int(vector<int> &a, vector<int> &b) {
     return true;
 }
 
-vector<string> split(string &s, char c) {
-    uint i;
-    int lp=0, count = 0;
-    vector<string> res;
-    FOR(i, 0, s.size()) {
-	count++;
-	if(s[i] == c) {
-	    string t = s.substr(lp, count);
-	    res.push_back(t);
-	    count = 0;
-	    lp = i+1;
-	}
-    }
-    return res;
-}
-
-string reverse(string s) {
-    string rev;
-    for(int t = s.size()-1; t>=0; t--)
-	rev.push_back(s[t]);
-    return rev;
-}
 
 
 // ---------- Union set data structure -------------------
-void unionInit(int d[],int s){int i;rep(i,s)d[i]=i;}
+void unionInit(int d[],int s){int i;REP(i,s)d[i]=i;}
 int unionGet(int d[],int n){int t=n,k;while(d[t]!=t)t=d[t];while(d[n]!=n)k=d[n],d[n]=t,n=k;return n;}
 int unionConnect(int d[],int a,int b){a=unionGet(d,a);b=unionGet(d,b);if(a==b)return 0;d[a]=b;return 1;}
 // ---------------Union set data structure ends ----------
@@ -679,6 +659,7 @@ skipListAddElementInLast(&SS, lsls+i, i);
 
 void intIntIntSort(int d[],int m1[],int m2[],int s){int i=-1,j=s,k,t;if(s<=1)return;k=(d[0]+d[s-1])/2;for(;;){while(d[++i]<k);while(d[--j]>k);if(i>=j)break;t=d[i];d[i]=d[j];d[j]=t;t=m1[i];m1[i]=m1[j];m1[j]=t;t=m2[i];m2[i]=m2[j];m2[j]=t;}intIntIntSort(d,m1,m2,i);intIntIntSort(d+j+1,m1+j+1,m2+j+1,s-j-1);}
 
+void intIntSort(int d[],int m1[],int s){int i=-1,j=s,k,t;if(s<=1)return;k=(d[0]+d[s-1])/2;for(;;){while(d[++i]<k);while(d[--j]>k);if(i>=j)break;t=d[i];d[i]=d[j];d[j]=t;t=m1[i];m1[i]=m1[j];m1[j]=t;}intIntSort(d,m1,i);intIntSort(d+j+1,m1+j+1,s-j-1);}
 
 
 char* reverse_char_string(const char* c, int len) {
@@ -718,7 +699,7 @@ ll nCr_iterative(ll n, ll k) {
     ll res = 1;
     if(k<n-k) k = n-k;
     for(ll i=1; i<=k; i++) {
-	ll d = hcf(res, i);
+	ll d = gcd(res, i);
 	res/=d;
 	res= res*((n-k+i)/(i/d));
     }
@@ -731,7 +712,7 @@ ll nCr_iterative(ll n, ll k) {
  */
 inline int nCr_dynamic(int n, int k) {
     // --- #define part
-    #define MAXN 10005
+#define MAXN 10005
     //---------------
     //----- global initialization ----
     int tab[MAXN][MAXN];
@@ -767,10 +748,62 @@ int power(int x, unsigned n) {
 }
 
 
+uint64_t sqr_ll(uint64_t x, uint64_t p)
+{
+    if (x <= pow_9)
+	return ((x * x) % p);
+
+    uint64_t x1 = x / pow_9;
+    uint64_t x2 = x % pow_9;
+
+    uint64_t A = (x1 * x1) % p;
+    for (int i = 0; i < 9; i++)
+	A = (A * 10) % p;
+
+    A = (A + 2 * x1 * x2) % p;
+    for (int i = 0; i < 9; i++)
+	A = (A * 10) % p;
+
+    A = (A + x2 * x2) % p;
+    return A;
+}
+
+uint64_t mul_ll(uint64_t x, uint64_t y, uint64_t p)
+{
+    if (x <= CNST || y < 19)
+	return ((x * y) % p);
+
+    uint64_t res = (x * (y / 10)) % p;
+    res = (res * 10) % p;
+    
+    res = (res + (x * (y % 10))) % p;
+    return res;
+}
+
+uint64_t power_ll(uint64_t x, uint64_t y, uint64_t p)
+{
+    if (y == 0)
+	return 1;
+
+    if (y == 1)
+	return ((x % p));
+
+    uint64_t t = power(x, y/2, p);
+    t = sqr(t, p);
+
+    if (y % 2)
+	t = mul(t, x, p);
+
+    return t;
+}
+
+
+
+
 int inverse(int x){
     return power(x, MODN-2);
 }
- 
+
 void factAndInvfact(){
     fact[0]=1;
     for(int i=1; i<=MAXN; i++)
@@ -876,77 +909,77 @@ void fenwick_increase(vector<int> &tree, int k, int inc) {
 
 //-----------------PRIMS MINIMUM SPANNING TREE------------------
 /*
-class prims
-{
-private :
-int MAX = 100;
-int cost[MAX][MAX], tree[MAX][MAX];
+  class prims
+  {
+  private :
+  int MAX = 100;
+  int cost[MAX][MAX], tree[MAX][MAX];
   int n;
   public  : void readmatrix();
-    int spanningtree(int);
-      void display(int);
+  int spanningtree(int);
+  void display(int);
 
-      // NODES NUMBERED FROM 1 to n
-    // Define code of both c[i][j] and c[j][i];
-};
+  // NODES NUMBERED FROM 1 to n
+  // Define code of both c[i][j] and c[j][i];
+  };
 
-void prims :: readmatrix()
-{
-int i, j;
-cout << "\nEnter the number of vertices in the Graph : ";
-cin  >> n;
-cout << "\nEnter the Cost matrix of the Graph\n\n";
-for (i = 1; i <= n; i++)
-for (j = 1; j <= n; j++)
-cin >> cost[i][j];
-}
+  void prims :: readmatrix()
+  {
+  int i, j;
+  cout << "\nEnter the number of vertices in the Graph : ";
+  cin  >> n;
+  cout << "\nEnter the Cost matrix of the Graph\n\n";
+  for (i = 1; i <= n; i++)
+  for (j = 1; j <= n; j++)
+  cin >> cost[i][j];
+  }
 
-int prims :: spanningtree(int src)
-{
-int visited[MAX], d[MAX], parent[MAX];
-int i, j, k, min, u, v, stcost;
-for (i = 1; i <= n; i++)
-{
-d[i] = cost[src][i];
-visited[i] = 0;
-parent[i] = src;
-}
-visited[src] = 1;
-stcost = 0;
-k = 1;
-for (i = 1; i < n; i++)
-{
-min = 999;
-for (j = 1; j <= n; j++)
-{
-if (!visited[j] && d[j] < min)
-{
-min = d[j];
-u = j;
-}
-}
-visited[u] = 1;
-stcost = stcost + d[u];
-tree[k][1] = parent[u];
-tree[k++][2] = u;
-for (v = 1; v <= n; v++)
-if (!visited[v] && (cost[u][v] < d[v]))
-{
-d[v] = cost[u][v];
-parent[v] = u;
-}
-}
-return (stcost);
-}
+  int prims :: spanningtree(int src)
+  {
+  int visited[MAX], d[MAX], parent[MAX];
+  int i, j, k, min, u, v, stcost;
+  for (i = 1; i <= n; i++)
+  {
+  d[i] = cost[src][i];
+  visited[i] = 0;
+  parent[i] = src;
+  }
+  visited[src] = 1;
+  stcost = 0;
+  k = 1;
+  for (i = 1; i < n; i++)
+  {
+  min = 999;
+  for (j = 1; j <= n; j++)
+  {
+  if (!visited[j] && d[j] < min)
+  {
+  min = d[j];
+  u = j;
+  }
+  }
+  visited[u] = 1;
+  stcost = stcost + d[u];
+  tree[k][1] = parent[u];
+  tree[k++][2] = u;
+  for (v = 1; v <= n; v++)
+  if (!visited[v] && (cost[u][v] < d[v]))
+  {
+  d[v] = cost[u][v];
+  parent[v] = u;
+  }
+  }
+  return (stcost);
+  }
 
-void prims :: display(int cost)
-{
-int i;
-cout << "\nThe Edges of the Mininum Spanning Tree are\n\n";
-for (i = 1; i < n; i++)
-cout << tree[i][1] << " " << tree[i][2] << endl;
-cout << "\nThe Total cost of the Minimum Spanning Tree is : " << cost;
-}
+  void prims :: display(int cost)
+  {
+  int i;
+  cout << "\nThe Edges of the Mininum Spanning Tree are\n\n";
+  for (i = 1; i < n; i++)
+  cout << tree[i][1] << " " << tree[i][2] << endl;
+  cout << "\nThe Total cost of the Minimum Spanning Tree is : " << cost;
+  }
 */
 //---------------------------------------------------------------
 
@@ -1056,59 +1089,59 @@ int f[BASE+BASE];
 int lo,hi;
 void update(int ind,int beg,int end)
 {
-	if(beg>hi || end<lo) return;
-	if(lo<=beg && end<=hi)
-	{
-		r[ind] = end-beg+1 - r[ind];
-		f[ind] = 1-f[ind];
+    if(beg>hi || end<lo) return;
+    if(lo<=beg && end<=hi)
+    {
+	r[ind] = end-beg+1 - r[ind];
+	f[ind] = 1-f[ind];
 		
-		int len = end-beg+1;
-		for(ind>>=1,len<<=1; ind; ind>>=1,len<<=1)
-		{
-			r[ind] = r[ind+ind] + r[ind+ind+1];
-			if(f[ind])
-				r[ind] = len - r[ind];
-		}
-		return;
+	int len = end-beg+1;
+	for(ind>>=1,len<<=1; ind; ind>>=1,len<<=1)
+	{
+	    r[ind] = r[ind+ind] + r[ind+ind+1];
+	    if(f[ind])
+		r[ind] = len - r[ind];
 	}
+	return;
+    }
 	
-	int twice=ind<<1;
-	int mid = (beg+end)>>1;
+    int twice=ind<<1;
+    int mid = (beg+end)>>1;
 	
-	update(twice,beg,mid);
-	update(twice+1,mid+1,end);
+    update(twice,beg,mid);
+    update(twice+1,mid+1,end);
 }
  
 void updatex(int _lo,int _hi)
 {
-	lo=_lo;
-	hi=_hi;
-	update(1,0,BASE-1);
+    lo=_lo;
+    hi=_hi;
+    update(1,0,BASE-1);
 }
  
 int query(int ind,int beg,int end,int flip)
 {
-	if(beg>hi || end<lo) return 0;
-	if(lo<=beg && end<=hi) return flip ? end-beg+1 - r[ind] : r[ind];
+    if(beg>hi || end<lo) return 0;
+    if(lo<=beg && end<=hi) return flip ? end-beg+1 - r[ind] : r[ind];
 	
-	int twice=ind<<1;
-	int mid = (beg+end)>>1;
-	flip = flip^f[ind];
+    int twice=ind<<1;
+    int mid = (beg+end)>>1;
+    flip = flip^f[ind];
 
-	return query(twice,beg,mid,flip) + query(twice+1,mid+1,end,flip);
+    return query(twice,beg,mid,flip) + query(twice+1,mid+1,end,flip);
 }
  
 int query(int _lo,int _hi)
 {
-	lo=_lo;
-	hi=_hi;
-	return query(1,0,BASE-1,0);
+    lo=_lo;
+    hi=_hi;
+    return query(1,0,BASE-1,0);
 }
  
 void init()
 {
-	fill(r,0);
-	fill(f,0);
+    fill(r,0);
+    fill(f,0);
 }
 
 
@@ -1140,6 +1173,25 @@ int readInt() {
     }
     return n;
 }
+// below functions need fread to have done init and ipt before
+void gint(int &n) {
+    while (ibuf[ipt] < '0') ipt++;
+    n = 0;
+    while (ibuf[ipt] >= '0') n = (n*10)+(ibuf[ipt++]-'0');
+}
+
+void gd(double &d) {
+    while (ibuf[ipt] < '-') ipt++;
+    int n = 0, m=0, pow=1; char neg = 0;
+    if(ibuf[ipt]=='-') {neg = 1; ipt++;}
+    while (ibuf[ipt] >= '0') n = (n*10)+(ibuf[ipt++]-'0');
+    if(ibuf[ipt] == '.') {
+	ipt++;
+	while (ibuf[ipt] >= '0') {m = (m*10)+(ibuf[ipt++]-'0'); pow*=10;}
+    }
+    d=m; d/=pow; d+=n; if(neg) d=-d;
+}
+
 
 //-------------------------------
 
@@ -1274,7 +1326,8 @@ int fordFulkerson( int n, int s, int t )
       #define MAXN 1000
       int fnet[MAXN][MAXN];
       int cap[MAXN][MAXN];
-     */
+      int prv[MAXN], q[MAXN];
+    */
     // init the flow network
     memset( fnet, 0, sizeof( fnet ) );
     
@@ -1317,3 +1370,588 @@ void powerMat(ULL f[2][2],ULL n,ULL mod){
     if(n%2!=0)
 	multiply(f,m,mod);
 }
+
+
+
+// -- CONVEX HULL PROGRAM --------
+inline float
+isLeft( Point P0, Point P1, Point P2 )
+{
+    return (P1.x - P0.x)*(P2.y - P0.y) - (P2.x - P0.x)*(P1.y - P0.y);
+}
+//===================================================================
+ 
+
+// chainHull_2D(): Andrew's monotone chain 2D convex hull algorithm
+//     Input:  P[] = an array of 2D points 
+//                   presorted by increasing x- and y-coordinates
+//             n = the number of points in P[]
+//     Output: H[] = an array of the convex hull vertices (max is n)
+//     Return: the number of points in H[]
+int
+convexHull_2D( Point* P, int n, Point* H )
+{
+    // the output array H[] will be used as the stack
+    int    bot=0, top=(-1);  // indices for bottom and top of the stack
+    int    i;                // array scan index
+
+    // Get the indices of points with min x-coord and min|max y-coord
+    int minmin = 0, minmax;
+    float xmin = P[0].x;
+    for (i=1; i<n; i++)
+        if (P[i].x != xmin) break;
+    minmax = i-1;
+    if (minmax == n-1) {       // degenerate case: all x-coords == xmin
+        H[++top] = P[minmin];
+        if (P[minmax].y != P[minmin].y) // a nontrivial segment
+            H[++top] = P[minmax];
+        H[++top] = P[minmin];           // add polygon endpoint
+        return top+1;
+    }
+
+    // Get the indices of points with max x-coord and min|max y-coord
+    int maxmin, maxmax = n-1;
+    float xmax = P[n-1].x;
+    for (i=n-2; i>=0; i--)
+        if (P[i].x != xmax) break;
+    maxmin = i+1;
+
+    // Compute the lower hull on the stack H
+    H[++top] = P[minmin];      // push minmin point onto stack
+    i = minmax;
+    while (++i <= maxmin)
+    {
+        // the lower line joins P[minmin] with P[maxmin]
+        if (isLeft( P[minmin], P[maxmin], P[i]) >= 0 && i < maxmin)
+            continue;          // ignore P[i] above or on the lower line
+
+        while (top > 0)        // there are at least 2 points on the stack
+        {
+            // test if P[i] is left of the line at the stack top
+            if (isLeft( H[top-1], H[top], P[i]) > 0)
+                break;         // P[i] is a new hull vertex
+            else
+                top--;         // pop top point off stack
+        }
+        H[++top] = P[i];       // push P[i] onto stack
+    }
+
+    // Next, compute the upper hull on the stack H above the bottom hull
+    if (maxmax != maxmin)      // if distinct xmax points
+        H[++top] = P[maxmax];  // push maxmax point onto stack
+    bot = top;                 // the bottom point of the upper hull stack
+    i = maxmin;
+    while (--i >= minmax)
+    {
+        // the upper line joins P[maxmax] with P[minmax]
+        if (isLeft( P[maxmax], P[minmax], P[i]) >= 0 && i > minmax)
+            continue;          // ignore P[i] below or on the upper line
+
+        while (top > bot)    // at least 2 points on the upper stack
+        {
+            // test if P[i] is left of the line at the stack top
+            if (isLeft( H[top-1], H[top], P[i]) > 0)
+                break;         // P[i] is a new hull vertex
+            else
+                top--;         // pop top point off stack
+        }
+        H[++top] = P[i];       // push P[i] onto stack
+    }
+    if (minmax != minmin)
+        H[++top] = P[minmin];  // push joining endpoint onto stack
+
+    return top+1;
+}
+
+// ------ MATRIX EXPONENTIATION --------------
+
+struct mat {
+    unsigned long long int matriz[MAX_K][MAX_K];
+    
+    void operator=(const mat& curr) {
+	memcpy(matriz, curr.matriz, sizeof matriz);
+    }
+	
+	mat operator*(const mat& curr) const {
+	    long long int suma;
+	    mat temp;
+	    for (int i = 0; i < MAX_K; i++) {
+		for (int j = 0; j < MAX_K; j++) {
+		    suma = 0;
+		    for (int k = 0; k < MAX_K; k++) {
+			suma = (suma + (matriz[i][k]*curr.matriz[k][j])) % MODN;
+		    }
+		    temp.matriz[i][j] = suma;
+		}
+	    }
+	    return temp;
+	}
+};
+
+void exponentiar(mat &initial, mat &exponente, ull N) {
+    unsigned long long int exp, ini = 1;
+    for (exp = 1; exp <= N; exp<<=1) {}
+    exp>>=1;
+    N -= exp;
+    exp>>=1;
+    while(exp){
+	if (N&exp) {
+	    exponente=(exponente*exponente)*initial;
+	    ini = (ini<<1)|1;
+	    N -= exp;
+	} else {
+	    exponente=(exponente*exponente);
+	    ini<<=1;
+	}
+	exp>>=1;
+    }
+}
+
+// memorised one
+mat c[60];
+void expo(ll n, mat &m)
+{
+    int pos = 60;
+    while(pos>=0)
+    {
+        if(n&(1LL<<pos))
+        {
+            m=m*c[pos];
+        }
+        pos--;
+    }
+}
+void init()
+{
+    REP(ni, 60) memcpy(c[ni].matriz, hash[ni], sizeof(ll)*16);
+}
+
+// --------- END OF MATRIX EXPONENTIATION ----------
+
+
+int pr[80000];
+int prc = 0;
+void genprimes()
+{
+    char ispr[1000000];
+    memset(ispr, 0, sizeof(char)*1000000);
+    pr[0] = 2;
+    prc = 1;
+    for(int i = 3; i<1000000; i+=2)
+    {
+	if(ispr[i] == 0)
+	{
+	    pr[prc++] = i;
+	    int st = i, pl = st<<1;
+	    while(st<1000000)
+	    {
+		ispr[st] = 1;
+		st+=pl;
+	    }
+	}
+    }
+}
+
+// CIRCLE ALGORITHMS
+
+char circle_inside_circle(int inx, int iny, int inr, int outx, int outy, int outr)
+{
+    if(inr > outr) return 0;
+    ll ds = (inx-outx)*(inx-outx) + (iny-outy)*(iny-outy);
+    ll rsq = (inr - outr)*(inr-outr);
+    if(ds <= rsq) return 1;
+    return 0;
+}
+
+char circle_disjoint(int c1x, int c1y, int c1r, int c2x, int c2y, int c2r)
+{
+    ll ds = (c1x-c2x)*(c1x-c2x) + (c1y-c2y)*(c1y-c2y);
+    ll rsq = (c1r + c2r)*(c1r+c2r);
+    if(ds >= rsq) return 1;
+    return 0;
+}
+
+
+// this does not include just touching at a point
+char circle_intersect(int c1x, int c1y, int r1, int c2x, int c2y, int r2)
+{
+    if(circle_disjoint(int c1x, int c1y, int r1, int c2x, int c2y, int r2)) return 0;
+    if(circle_inside_circle(int c1x, int c1y, int r1, int c2x, int c2y, int r2)) return 0;
+    if(circle_inside_circle(int c2x, int c2y, int r2, int c1x, int c1y, int r1)) return 0;
+    return 1;
+}
+
+char circle_touch(int c1x, int c1y, int r1, int c2x, int c2y, int r2)
+{
+    ll ds = (inx-outx)*(inx-outx) + (iny-outy)*(iny-outy);
+    ll rsq = (inr + outr)*(inr+outr);
+    ll rsp = (inr - outr)*(inr-outr);
+    if(ds == rsq || ds == rsp ) return 1;
+    return 0;
+}
+
+// Line segment algorithms
+bool intersection_line_segment(pair<float, float> &s1, pair<float, float> &l1, 
+			       pair<float, float> &s2, pair<float, float> &l2,
+			       pair<float, float> &result) {
+    
+}
+
+bool intersects_line_segments(pair<float, float> &s1, pair<float, float> &l1, 
+			      pair<float, float> &s2, pair<float, float> &l2) {
+    
+}
+
+// String Utility functions
+vector<int> string_split(string &s)
+{
+    stringstream ss(s);
+    vector<int> res;
+    int d;
+    while(ss>>d)
+    	res.push_back(d);
+    return res;
+}
+vector<string> string_split(string &s)
+{
+    stringstream ss(s);
+    vector<string> res;
+    string d;
+    while(ss>>d)
+    	res.push_back(d);
+    return res;
+}
+
+// Reverse string
+string reverse(string &s) {
+    string rev;
+    for(int t = s.size()-1; t>=0; t--)
+	rev.push_back(s[t]);
+    return rev;
+}
+
+int inline string_to_int(char* a)
+{
+    int d; scanf("%d", &d); return d;
+}
+// Find position of wordList in grid down right and downright
+vector <string> WordFind::findWords(vector <string> grid, vector <string> wordList) {
+    vector<string> posdown;
+    vector<string> posright;
+    vector<string> posdr1;
+    vector<string> posdr2;
+    int n = grid.size();
+    int m = grid[0].size();
+    
+    for(int i = 0; i<n; i++)
+    {
+	posright.push_back(grid[i]);
+	string s1;
+	for(int j = 0; i+j<n && j < m; j++)
+	{
+	    s1.push_back(grid[i+j][j]);
+	}
+	debug(s1);
+	posdr1.push_back(s1);
+    }
+    for(int i = 0; i<m; i++)
+    {
+	string down;
+	for(int j = 0; j<n; j++)
+	    down.push_back(grid[j][i]);
+	posdown.push_back(down);
+	debug(i, down);
+	string s1;
+	for(int j = 0; j<n && i+j < m; j++)
+	{
+	    s1.push_back(grid[j][i+j]);
+	}
+	debug(s1);
+	posdr2.push_back(s1);
+    }
+    debug("start check");
+    int t = wordList.size();
+    vector<pii> rr;
+    for(int ti = 0; ti < t; ti++)
+    {
+	pii res = (make_pair(10000, 10000));
+	for(int i = 0; i<n; i++)
+	{
+	    int d = posright[i].find(wordList[ti]);
+	    if(d>=0)
+	    {
+		pii pos = make_pair(i, d);
+		if(pos < res) res = pos;
+	    }
+	    d = posdr1[i].find(wordList[ti]);
+	    if(d>=0)
+	    {
+		pii pos = make_pair(i+d, d);
+		if(pos < res) res = pos;
+	    }
+	}
+	for(int i = 0; i<m; i++)
+	{
+	    int d = posdown[i].find(wordList[ti]);
+	    if(d>=0)
+	    {
+		pii pos = make_pair(d, i);
+		if(pos < res) res = pos;
+	    }
+	    d = posdr2[i].find(wordList[ti]);
+	    if(d>=0)
+	    {
+		pii pos = make_pair(d, i+d);
+		if(pos < res) res = pos;
+	    }
+	}
+	if(res.first == 10000) {
+	    res = make_pair(-1, -1);
+	}
+	rr.push_back(res);
+    }
+    return rr;
+}
+
+/* BINARY INDEXED TREE */
+typedef struct struct_intfenwick{
+    int size, memory;
+    int *data;
+}intFenwickTree;
+
+intFenwickTree intFenwickTreeNew(int memory){
+    intFenwickTree res;
+    res.memory=memory; res.data=(int*)malloc(memory*sizeof(int));
+    return res;
+}
+
+void intFenwickTreeDelete(intFenwickTree *t){free(t->data);}
+void intFenwickTreeInit(intFenwickTree *t, int size){int i; t->size=size; rep(i,size) t->data[i]=0;}
+int intFenwickTreeAdd(intFenwickTree *t,int k,int add){while(k<t->size)t->data[k]+=add, k|=k+1;}
+int intFenwickTreeGet(intFenwickTree *t,int k){int res=0; while(k>=0)res+=t->data[k],k=(k&(k+1))-1; return res;}
+int intFenwickTreeRange(intFenwickTree *t,int a,int b){return intFenwickTreeGet(t,b)-intFenwickTreeGet(t,a-1);}
+
+/* FACTORIAL AND INVERSE FACTORIAL QUICK */
+void fac_and_invfac_and_inv()
+{
+    fac[0] = 1;
+    invfac[0] = 1;
+    inv[0] = 1;
+    fac[1] = 1;
+    invfac[1] = 1;
+    inv[1] = 1;
+    for (int i=2;i<=100001;i++) inv[i]=MODN-(inv[MODN%i]*(ll)(MODN/i))%MODN;
+    for (int i=1;i<=100001;i++) fac[i]=(fac[i-1]*(ll)i)%MODN,invfac[i]=(invfac[i-1]*(ll)inv[i])%MODN;
+  
+}
+
+// ------- AHO CORASIC -------------------------
+char fav[100][20]; int fav_len[100];
+int cnv[100][20], rev_a[2000], rev_b[2000];
+char now[100]; int now_len, a, b, sa, sb, na, nb;
+int node = 0; // no of nodes in the aho corasic trie tree built
+int yes_node = 1999;
+int edge[2000][10];
+void build_aho_corasic() {
+
+    // --- Clean up work to remove some strings
+    for(;;){
+	int fg = 0;
+	REP(i,N) REP(j,N) if(!fg && i != j && fav_len[i] >= fav_len[j]){
+	    REP(k,fav_len[i]-fav_len[j]+1){
+		if(is_same(fav[i]+k, fav[j], fav_len[j])){
+		    N--; fg++;
+		    DFOR(k,i,N){
+			fav_len[k] = fav_len[k+1];
+			REP(m,fav_len[k]) fav[k][m] = fav[k+1][m];
+		    }
+		    break;
+		}
+	    }
+	}
+	if(!fg) break;
+    }
+    
+    // -- Algo begins here
+    REP(i,N) REP(j,fav_len[i]+1) cnv[i][j] = -1;
+    node = 0;
+    
+    cnv[0][0] = node;
+    rev_a[node] = 0; rev_b[node] = 0;
+    node++;
+    REP(k, node){
+	a = rev_a[k];
+	b = rev_b[k];
+	REP(i,b) now[i] = fav[a][i];
+	REP(m,10){
+	    now_len = b;
+	    now[now_len++] = m;
+	    sa = -1;
+	    for(nb=now_len;nb;nb--) if(sa==-1) REP(na,N) if(sa==-1){
+			if(fav_len[na] < nb) continue;
+			if(strncmp(now+now_len-nb, fav[na], nb) == 0){
+			    sa = na;
+			    sb = nb;
+			}
+		    }
+	    if(sa==-1) sa=sb=0;
+	    if(sb==fav_len[sa]){ edge[k][m] = yes_node; continue; }
+	    if(cnv[sa][sb]==-1){
+		cnv[sa][sb] = node;
+		rev_a[node] = sa;
+		rev_b[node] = sb;
+		node++;
+	    }
+	    edge[k][m] = cnv[sa][sb];
+	}
+    }
+}
+
+// -------------- AHO CORASIC ENDS -------------------------
+
+
+// ----------------- DINIC MAXFLOW ALGORITHM --------------
+/****************
+ * Maximum flow * (Dinic's on an adjacency list + matrix)
+ ****************
+ * Takes a weighted directed graph of edge capacities as an adjacency 
+ * matrix 'cap' and returns the maximum flow from s to t.
+ *
+ * PARAMETERS:
+ *      - cap (global): adjacency matrix where cap[u][v] is the capacity
+ *          of the edge u->v. cap[u][v] is 0 for non-existent edges.
+ *      - n: the number of vertices ([0, n-1] are considered as vertices).
+ *      - s: source vertex.
+ *      - t: sink.
+ * RETURNS:
+ *      - the flow
+ *      - prev contains the minimum cut. If prev[v] == -1, then v is not
+ *          reachable from s; otherwise, it is reachable.
+ **/
+
+#include <string.h>
+#include <stdio.h>
+
+// the maximum number of vertices
+#define NN 1024
+
+// adjacency matrix (fill this up)
+// If you fill adj[][] yourself, make sure to include both u->v and v->u.
+int cap[NN][NN], deg[NN], adj[NN][NN];
+
+// BFS stuff
+int q[NN], prev[NN];
+
+int dinic( int n, int s, int t )
+{
+    int flow = 0;
+
+    while( true )
+    {
+        // find an augmenting path
+        memset( prev, -1, sizeof( prev ) );
+        int qf = 0, qb = 0;
+        prev[q[qb++] = s] = -2;
+        while( qb > qf && prev[t] == -1 )
+            for( int u = q[qf++], i = 0, v; i < deg[u]; i++ )
+                if( prev[v = adj[u][i]] == -1 && cap[u][v] )
+                    prev[q[qb++] = v] = u;
+
+        // see if we're done
+        if( prev[t] == -1 ) break;
+
+        // try finding more paths
+        for( int z = 0; z < n; z++ ) if( cap[z][t] && prev[z] != -1 )
+        {
+            int bot = cap[z][t];
+            for( int v = z, u = prev[v]; u >= 0; v = u, u = prev[v] )
+                bot <?= cap[u][v];
+            if( !bot ) continue;
+
+            cap[z][t] -= bot;
+            cap[t][z] += bot;
+            for( int v = z, u = prev[v]; u >= 0; v = u, u = prev[v] )
+            {
+                cap[u][v] -= bot;
+                cap[v][u] += bot;
+            }
+            flow += bot;
+        }
+    }
+
+    return flow;
+}
+
+//----------------- EXAMPLE USAGE ---------------------------------
+int main()
+{
+    // read a graph into cap[][]
+    memset( cap, 0, sizeof( cap ) );
+    int n, s, t, m;
+    scanf( " %d %d %d %d", &n, &s, &t, &m );
+    while( m-- )
+    {
+        int u, v, c; scanf( " %d %d %d", &u, &v, &c );
+        cap[u][v] = c;
+    }
+
+    // init the adjacency list adj[][] from cap[][]
+    memset( deg, 0, sizeof( deg ) );
+    for( int u = 0; u < n; u++ )
+        for( int v = 0; v < n; v++ ) if( cap[u][v] || cap[v][u] )
+            adj[u][deg[u]++] = v;
+
+    printf( "%d\n", dinic( n, s, t ) );
+    return 0;
+}
+//--------------------- DINIC ENDS HERE ---------------------------
+
+// ---------------------- KMP ALGORITHM ---------------------------
+// compute the prefix function pi
+int *compute_prefix_function(char *pattern, int psize, int* pi)
+{
+        int k = -1, i = 1;
+        pi[0] = k;
+        for (i = 1; i < psize; i++) {
+                while (k > -1 && pattern[k+1] != pattern[i])
+                        k = pi[k];
+                if (pattern[i] == pattern[k+1])
+                        k++;
+                pi[i] = k;
+        }
+        return pi;
+}
+
+// just compute the position of the match if one exists
+int weak_kmp(char *target, int tsize, char *pattern, int psize, int* pi)
+{
+        int i, k = -1;
+        for (i = 0; i < tsize; i++) {
+                while (k > -1 && pattern[k+1] != target[i])
+                        k = pi[k];
+                if (target[i] == pattern[k+1])
+                        k++;
+                if (k == psize - 1) {
+                        return i-k;
+                }
+        }
+        return -1;
+}
+// used to compute the prefix pattern of the target string. 
+//only useful when it does contain the actual string
+int strong_kmp(char *target,  int tsize, int* ti, 
+               char *pattern, int psize, int* pi)
+{
+        int i, k = -1; t[0] = -1;
+        for (i = 0; i < tsize; i++) {
+                while (k > -1 && pattern[k+1] != target[i])
+                        t[i] = k = pi[k];
+                if (target[i] == pattern[k+1])
+                        t[i] = ++k;
+                if (k == psize - 1) {
+                        return i-k;
+                }
+        }
+        return -1;
+}
+// ----------------- KMP ends here -------------------------------------

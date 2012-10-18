@@ -13,36 +13,27 @@
 #include <deque>
 #include <bitset>
 #include <cmath>
-#include <functional>
 #include <set>
+#include <sstream>
 
 using namespace std;
 
-#define INT_MAX 2147483647
-#define INT_MIN -2147483648
-#define MAX(a,b)   (((a)>(b))?(a):(b))
-#define MIN(a,b)   (((a)<(b))?(a):(b))
-#define CMAX(a,b)  if((a)<(b)) a=b
-#define CMIN(a,b)  if((a)>(b)) a=b
-#define FOR(i,a,b)   for(i=a; i<b; i++)
-#define REVI(i,a,b)  for(int i= a ; i >= b ; --i)
+#define oo 0x7F7F7F7F
 #define LET(x,a)     __typeof(a) x(a)
-#define IFOR(i,a,b)  for(LET(i,a);i!=(b);++i)
-#define DFOR(i,a,b)  for(LET(i,a);i<(b);++i)
-#define EACH(it,v)   IFOR(it,v.begin(),v.end())
-#define SWAP(a,b,t)  t=a,a=b,b=t
-#define REP(i,n)     for(int i=0; i<n; i++)
+#define EACH(it,v)   for(LET(it,v.begin());it!=v.end();++it)
+#define REP(i,n)     for(__typeof(n) i(0); i<n; i++)
+#define ALL(x)       (x).begin(), (x).end()
 #define gint(t)      scanf("%d", &t);
 #define pint(t)      printf("%d\n", t);
 #define pb           push_back
-
+#define mp           make_pair
 #ifdef JAI_ARENA
-#define debug(args...) {dbg,args; cerr<<endl;}
-#define dline cerr<<endl
+#define debug(args...) {cout<<"> "; dbg,args;cerr<<endl;}
+#define debugv(v)      {cout<<"> "; EACH(it, v) dbg,(*it); cerr<<endl;}
 #else
-#define debug(args...) {};
+#define debug(args...) {}
+#define debugv(x) {}
 #endif
-
 typedef long long int   ll;
 typedef unsigned long long int ull;
 typedef unsigned int    uint;
@@ -65,29 +56,26 @@ struct debugger
 char ibuf[BUF];
 int ipt = BUF;
  
-int readInt() {
+int readUInt() {
     while (ipt < BUF && ibuf[ipt] < '0') ipt++;
     if (ipt == BUF) {
 	fread(ibuf, 1, BUF, stdin);
 	ipt = 0;
 	while (ipt < BUF && ibuf[ipt] < '0') ipt++;
     }
-    int n = 0;
+    int n = 0; char neg = 0;
+    if(ipt !=0 && ibuf[ipt-1] == '-') neg = 1;
     while (ipt < BUF && ibuf[ipt] >= '0') n = (n*10)+(ibuf[ipt++]-'0');
     if (ipt == BUF) {
 	fread(ibuf, 1, BUF, stdin);
 	ipt = 0;
 	while (ipt < BUF && ibuf[ipt] >= '0') n = (n*10)+(ibuf[ipt++]-'0');
     }
-    return n;
+    return neg?-n:n;
 }
-
-
-/* memset(start*, byteVal, numBytes);
- *  memcpy(dst*, src*, numBytes);
- */
 
 int main()
 {
+    
     return 0;
 }

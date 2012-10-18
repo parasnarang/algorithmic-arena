@@ -1,32 +1,54 @@
 #!/bin/bash
-if [ $# -lt 0 ]
+
+INPUTFILE="1"
+
+if [ $# -gt 0 ]
 then
-    echo "Enter prog name"
-    exit 1
+    INPUTFILE=$1.in
+    OUTPUTFILE=$1.out
 fi
 
-INPUTFILE=input
-OUTPUTFILE=output
-progname=myprog #`echo $1 | sed -e 's/^.*\\///'`
+progname=run #`echo $1 | sed -e 's/^.*\\///'`
+rm -f bin/algoout bin/$progname bin/diffout > /dev/null >> /dev/null
 
-rm -f bin/algoout bin/$progname.o bin/diffout > /dev/null >> /dev/null
+DEBUG_MODE=0
 
-g++ -DJAI_ARENA -g *.cpp -o bin/$progname.o
+if [ $# -gt 1 ]
+then
+    if [ $2 -eq 1 ]
+    then
+	DEBUG_MODE=1
+	echo "Running in Debug Mode"
+	g++ -DJAI_ARENA -Wall -W -Wextra -g *.cpp -o bin/$progname
+	bin/$progname < $INPUTFILE 
+    fi   
+fi
 
-if [ ! -e bin/$progname.o ]
+if [ $DEBUG_MODE -eq 0 ]
+then
+    g++ -Wall -W -Wextra -g *.cpp -o bin/$progname
+fi
+
+if [ ! -e bin/$progname ]
 then
     echo "\nCompilation Error\n"
     exit 1
 fi
 
+if [ $DEBUG_MODE -eq 1 ]
+then
+    exit 1
+fi
+
+
 if [[ ! -e $INPUTFILE || ! -f $INPUTFILE ]]
 then
     echo "[*] Could not find a valid input file. Redirecting to Terminal:"
-    bin/$progname.o
+    time bin/$progname
     exit 1
 else
     echo -n Time taken:
-    time bin/$progname.o < $INPUTFILE > bin/algoout 2>&1
+    time bin/$progname < $INPUTFILE > bin/algoout
     echo -------------------------------
     echo
 fi
