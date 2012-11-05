@@ -1,4 +1,13 @@
 import math
+allfunc = ["fact(n)",
+        "sumOfDigits(n)",
+        "ncr(a,b)",
+        "computecnr()"]
+
+def printall():
+    for i in allfunc:
+        print i
+
 def fact(n):
     if n<=0:
         return 1
@@ -10,6 +19,9 @@ def sumOfDigits(n):
         sum+=n%10
         n/=10
     return sum
+
+def ncr(a, b):
+    return fac(a)/(fact(b)*fact(a-b))
 
 ncr=[[0 for i in range(51)] for j in range(51)]
 def computecnr():
