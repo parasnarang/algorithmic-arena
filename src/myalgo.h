@@ -26,7 +26,7 @@ public:
 	m_dataSize = 0;
 	m_v = 0x80000000;
     }
- 
+
     unsigned int ReadNext() {
 	if (m_dataOffset == m_dataSize) {
 	    int r = read(0, m_buffer, sizeof(m_buffer));
@@ -54,14 +54,14 @@ public:
 	}
 	return m_data[m_dataOffset++];
     }
- 
+
 public:
     uint8_t m_buffer[32768];
     uint32_t m_data[16384];
     size_t m_dataOffset, m_dataSize;
     uint32_t m_v;
 };
- 
+
 class FastOutput {
 public:
     FastOutput() {
@@ -69,7 +69,7 @@ public:
     }
     ~FastOutput() {
     }
- 
+
     void Flush() {
 	if (m_dataOffset) {
 	    if (write(1, m_data, m_dataOffset));
@@ -175,7 +175,7 @@ public:
     void ReplaceChar(int offset, char d) {
 	m_data[m_dataOffset + offset] = d;
     }
- 
+
 public:
     uint8_t m_data[32768];
     size_t m_dataOffset;
@@ -369,16 +369,16 @@ void init() {
 	rank[i] = 0;
     }
 }
- 
+
 int root(int x) {
     if(parent[x] != x) parent[x] = root(parent[x]);
     return parent[x];
 }
- 
+
 inline bool merge(const int &a, const int &b) {
     int ra = root(a), rb = root(b);
     if(ra == rb) return false;
- 
+
     if(rank[ra] > rank[rb]) parent[rb] = ra;
     else parent[ra] = rb;
     if(rank[ra] == rank[rb]) rank[rb]++;
@@ -596,9 +596,9 @@ void skipListAddListInLast(skipList *s, skipList *add, int sz){
 /* a => a[1..K], b => a[K+1..last] */
 void skipListDevide(skipList *a, skipList *b, int K){
     int i;
-  
+
     rep(i,a->height) b->dist[i] = -1;
-  
+
     for(i=a->height-1; i>=0; i--){
 	if(a->dist[i] < 0) continue;
 	if(a->dist[i] > K){
@@ -616,13 +616,13 @@ void skipListDevide(skipList *a, skipList *b, int K){
 
 skipList* skipListGetKthElement(skipList *s, int K){
     int i;
-  
+
     if(K==0) return s;
     for(i=s->height-1; i>=0; i--){
 	if(s->dist[i] < 0) continue;
 	if(K >= s->dist[i]) return skipListGetKthElement(s->next[i], K-(s->dist[i]));
     }
-  
+
     return (skipList*)NULL;
 }
 
@@ -668,7 +668,7 @@ char* reverse_char_string(const char* c, int len) {
     for(;j>=0;i++,j--)
 	a[i] = c[j];
     a[len] = '\0';
-    return a;
+    return a;tc
 }
 
 int lcs_len(string a, string b) {
@@ -775,7 +775,7 @@ uint64_t mul_ll(uint64_t x, uint64_t y, uint64_t p)
 
     uint64_t res = (x * (y / 10)) % p;
     res = (res * 10) % p;
-    
+
     res = (res + (x * (y % 10))) % p;
     return res;
 }
@@ -1085,7 +1085,7 @@ unsigned kdNode2D::nearest(const Point2D &point, int depth)
 const int BASE = 1<<17;
 int r[BASE+BASE];
 int f[BASE+BASE];
- 
+
 int lo,hi;
 void update(int ind,int beg,int end)
 {
@@ -1094,7 +1094,7 @@ void update(int ind,int beg,int end)
     {
 	r[ind] = end-beg+1 - r[ind];
 	f[ind] = 1-f[ind];
-		
+
 	int len = end-beg+1;
 	for(ind>>=1,len<<=1; ind; ind>>=1,len<<=1)
 	{
@@ -1104,40 +1104,40 @@ void update(int ind,int beg,int end)
 	}
 	return;
     }
-	
+
     int twice=ind<<1;
     int mid = (beg+end)>>1;
-	
+
     update(twice,beg,mid);
     update(twice+1,mid+1,end);
 }
- 
+
 void updatex(int _lo,int _hi)
 {
     lo=_lo;
     hi=_hi;
     update(1,0,BASE-1);
 }
- 
+
 int query(int ind,int beg,int end,int flip)
 {
     if(beg>hi || end<lo) return 0;
     if(lo<=beg && end<=hi) return flip ? end-beg+1 - r[ind] : r[ind];
-	
+
     int twice=ind<<1;
     int mid = (beg+end)>>1;
     flip = flip^f[ind];
 
     return query(twice,beg,mid,flip) + query(twice+1,mid+1,end,flip);
 }
- 
+
 int query(int _lo,int _hi)
 {
     lo=_lo;
     hi=_hi;
     return query(1,0,BASE-1,0);
 }
- 
+
 void init()
 {
     fill(r,0);
@@ -1156,7 +1156,7 @@ void init()
 #define BUF 4096
 char ibuf[BUF];
 int ipt = BUF;
- 
+
 int readInt() {
     while (ipt < BUF && ibuf[ipt] < '0') ipt++;
     if (ipt == BUF) {
@@ -1314,7 +1314,7 @@ int dfs_grid(int obs[][53], int sx, int sy, int r, int c)
 	}
 	s.pop();
     }
-       
+
 }
 
 
@@ -1330,9 +1330,9 @@ int fordFulkerson( int n, int s, int t )
     */
     // init the flow network
     memset( fnet, 0, sizeof( fnet ) );
-    
+
     int flow = 0,qf,qb;
-    
+
     while( true )
     {
         // find an augmenting path
@@ -1343,22 +1343,22 @@ int fordFulkerson( int n, int s, int t )
             for( int u = q[qf++], v = 0; v < n; v++ )
                 if( prv[v] == -1 && fnet[u][v] - fnet[v][u] < cap[u][v] )
                     prv[q[qb++] = v] = u;
-	
+
         // see if we're done
         if( prv[t] == -1 ) break;
-	
+
         // get the bottleneck capacity
         int bot = 0x7FFFFFFF;
         for( int v = t, u = prv[v]; u >= 0; v = u, u = prv[v] )
             bot = min(bot, cap[u][v] - fnet[u][v] + fnet[v][u]);
-	
+
         // update the flow network
         for( int v = t, u = prv[v]; u >= 0; v = u, u = prv[v] )
             fnet[u][v] += bot;
-	
+
         flow += bot;
     }
-    
+
     return flow;
 }
 
@@ -1380,10 +1380,10 @@ isLeft( Point P0, Point P1, Point P2 )
     return (P1.x - P0.x)*(P2.y - P0.y) - (P2.x - P0.x)*(P1.y - P0.y);
 }
 //===================================================================
- 
+
 
 // chainHull_2D(): Andrew's monotone chain 2D convex hull algorithm
-//     Input:  P[] = an array of 2D points 
+//     Input:  P[] = an array of 2D points
 //                   presorted by increasing x- and y-coordinates
 //             n = the number of points in P[]
 //     Output: H[] = an array of the convex hull vertices (max is n)
@@ -1467,11 +1467,11 @@ convexHull_2D( Point* P, int n, Point* H )
 
 struct mat {
     unsigned long long int matriz[MAX_K][MAX_K];
-    
+
     void operator=(const mat& curr) {
 	memcpy(matriz, curr.matriz, sizeof matriz);
     }
-	
+
 	mat operator*(const mat& curr) const {
 	    long long int suma;
 	    mat temp;
@@ -1591,15 +1591,15 @@ char circle_touch(int c1x, int c1y, int r1, int c2x, int c2y, int r2)
 }
 
 // Line segment algorithms
-bool intersection_line_segment(pair<float, float> &s1, pair<float, float> &l1, 
+bool intersection_line_segment(pair<float, float> &s1, pair<float, float> &l1,
 			       pair<float, float> &s2, pair<float, float> &l2,
 			       pair<float, float> &result) {
-    
+
 }
 
-bool intersects_line_segments(pair<float, float> &s1, pair<float, float> &l1, 
+bool intersects_line_segments(pair<float, float> &s1, pair<float, float> &l1,
 			      pair<float, float> &s2, pair<float, float> &l2) {
-    
+
 }
 
 // String Utility functions
@@ -1642,7 +1642,7 @@ vector <string> WordFind::findWords(vector <string> grid, vector <string> wordLi
     vector<string> posdr2;
     int n = grid.size();
     int m = grid[0].size();
-    
+
     for(int i = 0; i<n; i++)
     {
 	posright.push_back(grid[i]);
@@ -1742,71 +1742,65 @@ void fac_and_invfac_and_inv()
     inv[1] = 1;
     for (int i=2;i<=100001;i++) inv[i]=MODN-(inv[MODN%i]*(ll)(MODN/i))%MODN;
     for (int i=1;i<=100001;i++) fac[i]=(fac[i-1]*(ll)i)%MODN,invfac[i]=(invfac[i-1]*(ll)inv[i])%MODN;
-  
+
 }
 
 // ------- AHO CORASIC -------------------------
-char fav[100][20]; int fav_len[100];
-int cnv[100][20], rev_a[2000], rev_b[2000];
-char now[100]; int now_len, a, b, sa, sb, na, nb;
-int node = 0; // no of nodes in the aho corasic trie tree built
-int yes_node = 1999;
-int edge[2000][10];
-void build_aho_corasic() {
-
-    // --- Clean up work to remove some strings
-    for(;;){
-	int fg = 0;
-	REP(i,N) REP(j,N) if(!fg && i != j && fav_len[i] >= fav_len[j]){
-	    REP(k,fav_len[i]-fav_len[j]+1){
-		if(is_same(fav[i]+k, fav[j], fav_len[j])){
-		    N--; fg++;
-		    DFOR(k,i,N){
-			fav_len[k] = fav_len[k+1];
-			REP(m,fav_len[k]) fav[k][m] = fav[k+1][m];
-		    }
-		    break;
-		}
-	    }
-	}
-	if(!fg) break;
-    }
-    
-    // -- Algo begins here
-    REP(i,N) REP(j,fav_len[i]+1) cnv[i][j] = -1;
-    node = 0;
-    
-    cnv[0][0] = node;
-    rev_a[node] = 0; rev_b[node] = 0;
-    node++;
-    REP(k, node){
-	a = rev_a[k];
-	b = rev_b[k];
-	REP(i,b) now[i] = fav[a][i];
-	REP(m,10){
-	    now_len = b;
-	    now[now_len++] = m;
-	    sa = -1;
-	    for(nb=now_len;nb;nb--) if(sa==-1) REP(na,N) if(sa==-1){
-			if(fav_len[na] < nb) continue;
-			if(strncmp(now+now_len-nb, fav[na], nb) == 0){
-			    sa = na;
-			    sb = nb;
-			}
-		    }
-	    if(sa==-1) sa=sb=0;
-	    if(sb==fav_len[sa]){ edge[k][m] = yes_node; continue; }
-	    if(cnv[sa][sb]==-1){
-		cnv[sa][sb] = node;
-		rev_a[node] = sa;
-		rev_b[node] = sb;
-		node++;
-	    }
-	    edge[k][m] = cnv[sa][sb];
-	}
-    }
+#define CS 2 //character set size in the pattern string size
+#define K(a) ((a=='U')?(1):(0)) //mapping from character set to number
+int l,n,m,i,z;
+int p=1000000009;
+struct N{
+  int g,d,n[CS];
+}t[55];
+long long f[55][55][55][2];
+char s[60];
+void add(string s){ // Insert a pattern string ...
+  int p=1;
+  for(int i=0;i<s.size();i++){
+    if(!t[p].n[K(s[i])])
+      t[p].n[K(s[i])]=++m;
+    p=t[p].n[K(s[i])];
+  }
+  t[p].d|=1;
+  return;
 }
+void bd(){ // Build the Aho-Corasick automation ...
+  int x,j;
+  queue<int>q;
+  q.push(1);
+  while(q.size()){
+    int u=q.front();
+    q.pop();
+    REP(i,CS){
+      for(j=t[u].g;j;j=t[j].g)
+        if(t[j].n[i])
+          break;
+      if(x=t[u].n[i]){
+        t[x].g  = j?t[j].n[i]:1;
+        t[x].d |= t[t[x].g].d;
+        q.push(x);
+      }
+      else
+        t[u].n[i]=j?t[j].n[i]:1;
+    }
+  }
+  /**-- Section to bind the final states transitions to themselves.
+  for(int i = 0; i<=m;i++) {
+    if(t[i].d) {
+        for(int j=0; j<CS; ++j) t[i].n[j] = i;
+    }
+  }*/
 
+}
+aho_init()
+{
+    memset(f,0,sizeof f);
+    memset(t,0,sizeof t);
+    n=nn; // no of string you would add
+    m=1;
+    z=0;
+}
 // -------------- AHO CORASIC ENDS -------------------------
 
 
@@ -1814,7 +1808,7 @@ void build_aho_corasic() {
 /****************
  * Maximum flow * (Dinic's on an adjacency list + matrix)
  ****************
- * Takes a weighted directed graph of edge capacities as an adjacency 
+ * Takes a weighted directed graph of edge capacities as an adjacency
  * matrix 'cap' and returns the maximum flow from s to t.
  *
  * PARAMETERS:
@@ -1937,9 +1931,9 @@ int weak_kmp(char *target, int tsize, char *pattern, int psize, int* pi)
         }
         return -1;
 }
-// used to compute the prefix pattern of the target string. 
-//only useful when it does contain the actual string
-int strong_kmp(char *target,  int tsize, int* ti, 
+// used to compute the prefix pattern of the target string.
+// only useful when it does not contain the actual string
+int strong_kmp(char *target,  int tsize, int* ti,
                char *pattern, int psize, int* pi)
 {
         int i, k = -1; t[0] = -1;
@@ -1955,3 +1949,70 @@ int strong_kmp(char *target,  int tsize, int* ti,
         return -1;
 }
 // ----------------- KMP ends here -------------------------------------
+
+//------------- FIND PRODUCT removing a particular p mod m = some power of p ----------------
+inline int get_p(int st, int end, int m, int p) {
+    int prodp = 1;
+    for(int i = 1; i<m; i++) {
+        if(i%p == 0) continue;
+        prodp *= (i%m);
+        prodp %= m;
+        //debug(m, p, i, prodp)
+    }
+    int prod = 1;
+    while(st<=end) {
+        if(st%m==0) {
+            int rounds = (end-st+1)/m;
+            prod *= power(prodp, rounds, m);
+            prod %=m;
+            st+=rounds*m;
+            st++;
+            continue;
+        }
+        if(st%p == 0) {st++; continue;}
+        prod = (prod*(st%m))%m;
+        st++;
+    }
+    //debug("get_p", prod, prodp);
+    return prod;
+}
+inline int get_product(int st, int l, int m, int p) {
+    int prod = 1;
+    while(st<=l) {
+        prod*=get_p(st, l, m, p);
+        prod %= m;
+        int st2 = st/p;
+        if(st2*p<st) st2++;
+        st = st2;
+        l/=p;
+    }
+    return prod;
+}
+
+inline int gncr(int n, int r, int m) {
+    if(r>n-r) r = n-r;
+    int p = gpc(n, m)-gpc(r, m)-gpc(n-r, m);
+    if(p>0) { return 0;}
+    int num   = get_product(n-r+1, n, m, m);
+    int denom = get_product(1, r, m, m);
+    //debug(n, r, m, num, denom, get_product(n-r+1, n, m, m), get_product(1, r, m, m));
+    return (num*inverse(denom, m))%m;
+}
+// inverse mod 27 cannot be found by fermat's way
+inline int gncr27(int n, int r, int m) {
+    if(r>n-r) r = n-r;
+    int p = gpc(n, 3)-gpc(r, 3)-gpc(n-r, 3);
+    if(p>=3) return 0;
+    int nst = n-r+1, nl = n;
+    int dst = 1, dl = r;
+    int num   = get_product(nst, nl, m, 3);
+    int denom = get_product(dst, dl, m, 3);
+    //debug(n, r, m, num, denom, get_product(n-r+1, n, m, 3), get_product(1, r, m, 3));
+    int res = (num*inverse(denom, m))%m;
+    while(p) {
+        res = (res*3)%m;
+        p--;
+    }
+    return res;
+}
+//-----------------------END Exclusive product finder------------------------------------------------
