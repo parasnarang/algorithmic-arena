@@ -1,7 +1,5 @@
 # Algorithmic Arena
 
-( I have forked this from [Algorithmic-arena](https://github.com/jaigupta/algorithmic-arena) by [Jai Gupta](https://github.com/jaigupta/) )
- 
   
 ### Algorithmic arena for programming contests
 
