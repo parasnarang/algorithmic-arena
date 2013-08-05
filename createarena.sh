@@ -20,6 +20,7 @@ fi
 
 mkdir $1
 mkdir $1/bin
+mkdir $1/doneprogs
 cp test.sh $1
 cp start.sh $1
 cp clean.sh $1

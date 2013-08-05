@@ -6,7 +6,7 @@ then
 fi
 if [ ! -e $1 ]
 then
-    mv *.cpp ../doneprogs/
+    mv *.cpp doneprogs/
     rm -f *.in *.out
     cp ../src/template.cpp $1.cpp
     mvim input output ../src/myalgo.h $1.cpp
